@@ -1,5 +1,6 @@
 import * as path from 'node:path';
 import { promises as fs } from 'node:fs';
+import { pathToFileURL } from 'node:url';
 import { Kysely, PostgresDialect } from 'kysely';
 import { Migrator, FileMigrationProvider } from 'kysely/migration';
 import pg from 'pg';
@@ -23,6 +24,7 @@ async function migrate() {
       fs,
       path,
       migrationFolder: path.join(import.meta.dirname, 'migrations'),
+      import: (filePath) => import(pathToFileURL(filePath).href),
     }),
   });
 
